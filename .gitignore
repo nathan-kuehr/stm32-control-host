@@ -2,6 +2,10 @@
 *.d
 
 **/.DS_Store
+build
+.settings
+.vscode
+**/*.check_cache
 
 # Object files
 *.o
