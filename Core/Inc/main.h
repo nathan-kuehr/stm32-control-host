@@ -57,6 +57,24 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define ETH_MDC_Pin GPIO_PIN_1
+#define ETH_MDC_GPIO_Port GPIOC
+#define ETH_REF_CLK_Pin GPIO_PIN_1
+#define ETH_REF_CLK_GPIO_Port GPIOA
+#define ETH_MDIO_Pin GPIO_PIN_2
+#define ETH_MDIO_GPIO_Port GPIOA
+#define ETH_CRS_DV_Pin GPIO_PIN_7
+#define ETH_CRS_DV_GPIO_Port GPIOA
+#define ETH_RXD0_Pin GPIO_PIN_4
+#define ETH_RXD0_GPIO_Port GPIOC
+#define ETH_RXD1_Pin GPIO_PIN_5
+#define ETH_RXD1_GPIO_Port GPIOC
+#define ETH_TXD1_Pin GPIO_PIN_13
+#define ETH_TXD1_GPIO_Port GPIOB
+#define ETH_TX_EN_Pin GPIO_PIN_11
+#define ETH_TX_EN_GPIO_Port GPIOG
+#define ETH_TXD0_Pin GPIO_PIN_13
+#define ETH_TXD0_GPIO_Port GPIOG
 
 /* USER CODE BEGIN Private defines */
 
