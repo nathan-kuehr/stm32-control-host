@@ -217,7 +217,6 @@ void MPU_Config(void)
   MPU_InitStruct.BaseAddress = 0x2007c000;
   MPU_InitStruct.Size = MPU_REGION_SIZE_1KB;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
-  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
   MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
 
