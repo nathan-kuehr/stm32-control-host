@@ -1,0 +1,3 @@
+[submodule "Submodules/coreJSON"]
+	path = Submodules/coreJSON
+	url = https://github.com/FreeRTOS/coreJSON.git

@@ -6,6 +6,8 @@ build
 .settings
 .vscode
 **/*.check_cache
+CMakeCache.txt
+.clangd
 
 # Object files
 *.o
