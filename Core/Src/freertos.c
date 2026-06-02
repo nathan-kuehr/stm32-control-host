@@ -26,6 +26,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "serial.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,8 +50,8 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osMutexId uartLoggingMtxHandle;
-osStaticMutexDef_t uartLoggingMtxControlBlock;
+osMutexId serialWriteMutexHandle;
+osStaticMutexDef_t serialWriteMutexControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -100,12 +102,15 @@ void MX_FREERTOS_Init(void) {
 
     /* USER CODE END Init */
     /* Create the mutex(es) */
-    /* definition and creation of uartLoggingMtx */
-    osMutexStaticDef(uartLoggingMtx, &uartLoggingMtxControlBlock);
-    uartLoggingMtxHandle = osMutexCreate(osMutex(uartLoggingMtx));
+    /* definition and creation of serialWriteMutex */
+    osMutexStaticDef(serialWriteMutex, &serialWriteMutexControlBlock);
+    serialWriteMutexHandle = osMutexCreate(osMutex(serialWriteMutex));
 
     /* USER CODE BEGIN RTOS_MUTEX */
-    /* add mutexes, ... */
+
+    serialWriteBlockingInit(); // Init here the serial write as it takes access
+                               // to the mutex
+
     /* USER CODE END RTOS_MUTEX */
 
     /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -143,7 +148,7 @@ void StartDefaultTask(const void *argument) {
     /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
     for (;;) {
-        osDelay(1);
+        osDelay(500);
     }
     /* USER CODE END StartDefaultTask */
 }
