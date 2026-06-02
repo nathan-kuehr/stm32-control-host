@@ -1,7 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
-CAD.formats=
-CAD.pinconfig=
-CAD.provider=
+CAD.formats=[]
+CAD.pinconfig=Dual
+CAD.provider=Component Search Engine
 CORTEX_M7.AccessPermission-Cortex_Memory_Protection_Unit_Region1_Settings=MPU_REGION_FULL_ACCESS
 CORTEX_M7.AccessPermission-Cortex_Memory_Protection_Unit_Region2_Settings=MPU_REGION_FULL_ACCESS
 CORTEX_M7.BaseAddress-Cortex_Memory_Protection_Unit_Region1_Settings=0x20078000
@@ -202,7 +202,7 @@ ProjectManager.RegisterCallBack=
 ProjectManager.StackSize=0x400
 ProjectManager.TargetToolchain=CMake
 ProjectManager.ToolChainLocation=
-ProjectManager.UAScriptAfterPath=
+ProjectManager.UAScriptAfterPath=cube-mx-post-generation.sh
 ProjectManager.UAScriptBeforePath=
 ProjectManager.UnderRoot=false
 ProjectManager.functionlistsort=1-SystemClock_Config-RCC-false-HAL-false,2-MX_GPIO_Init-GPIO-false-HAL-true,3-MX_LWIP_Init-LWIP-false-HAL-false,4-MX_USART3_UART_Init-USART3-false-HAL-true,0-MX_CORTEX_M7_Init-CORTEX_M7-false-HAL-true

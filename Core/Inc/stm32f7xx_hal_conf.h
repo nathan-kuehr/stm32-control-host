@@ -154,13 +154,12 @@ extern "C" {
 /**
  * @brief This is the HAL system configuration section
  */
-#define VDD_VALUE         3300U            /*!< Value of VDD in mv */
-#define TICK_INT_PRIORITY ((uint32_t) 15U) /*!< tick interrupt priority */
-#define USE_RTOS          0U
-#define PREFETCH_ENABLE   0U
-#define ART_ACCELERATOR_ENABLE                                                 \
-    0U /* To enable instruction cache and prefetch                             \
-        */
+#define VDD_VALUE              3300U            /*!< Value of VDD in mv */
+#define TICK_INT_PRIORITY      ((uint32_t) 15U) /*!< tick interrupt priority */
+#define USE_RTOS               0U
+#define PREFETCH_ENABLE        0U
+#define ART_ACCELERATOR_ENABLE 0U /* To enable instruction cache and prefetch  \
+                                   */
 
 #define USE_HAL_ADC_REGISTER_CALLBACKS                                         \
     0U /* ADC register callback disabled       */
@@ -311,10 +310,13 @@ extern "C" {
     ((uint16_t) 0x0002U) /*!< Jabber condition detected            */
 
 /* Section 4: Extended PHY Registers */
-#define PHY_SR ((uint16_t) 0x001FU) /*!< PHY status register Offset */
+#define PHY_SR                                                                 \
+    ((uint16_t) 0x001FU) /*!< PHY status register Offset */
 
-#define PHY_SPEED_STATUS  ((uint16_t) 0x0004U) /*!< PHY Speed mask */
-#define PHY_DUPLEX_STATUS ((uint16_t) 0x0010U) /*!< PHY Duplex mask */
+#define PHY_SPEED_STATUS                                                       \
+    ((uint16_t) 0x0004U) /*!< PHY Speed mask */
+#define PHY_DUPLEX_STATUS                                                      \
+    ((uint16_t) 0x0010U) /*!< PHY Duplex mask */
 
 #define PHY_ISFR                                                               \
     ((uint16_t) 0x1DU) /*!< PHY Interrupt Source Flag register Offset   */
