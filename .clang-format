@@ -1,0 +1,83 @@
+---
+AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments:
+  Enabled: true
+  AlignCompound: true
+AlignConsecutiveBitFields:
+  Enabled: true
+AlignConsecutiveDeclarations: {}
+AlignConsecutiveMacros:
+  Enabled: true
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+AlignOperands: AlignAfterOperator
+AllowAllArgumentsOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCompoundRequirementOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+
+
+
+
+BinPackArguments: true
+#BinPackLongBracedList: true
+BinPackParameters: BinPack
+BitFieldColonSpacing: Both
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeConceptDeclarations: Always
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakStringLiterals: true
+BreakTemplateDeclarations: false
+
+ColumnLimit: 80
+CompactNamespaces: true
+ConstructorInitializerIndentWidth: 0
+ContinuationIndentWidth: 4
+
+Cpp11BracedListStyle: true
+
+EmptyLineBeforeAccessModifier: LogicalBlock
+
+FixNamespaceComments: true
+
+IndentGotoLabels: false
+IndentWidth: 4
+InsertBraces: true
+
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: true
+  AtStartOfFile: false
+
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: None
+
+PackConstructorInitializers: BinPack
+PenaltyBreakBeforeFirstCallParameter: 60
+PenaltyReturnTypeOnItsOwnLine: 200
+PenaltyBreakString: 30
+
+QualifierAlignment: Custom
+QualifierOrder: [inline, static, constexpr, const, friend, volatile, type, restrict]
+
+RemoveEmptyLinesInUnwrappedLines: false
+RequiresClausePosition: WithPreceding
+
+SeparateDefinitionBlocks: Leave
+
+UseTab: Never
+Standard: Latest
+SpacesInSquareBrackets: false
+SpaceBeforeInheritanceColon: false
+SpaceBeforeCtorInitializerColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCaseColon: false
+SpaceBeforeAssignmentOperators: true
+SpaceAfterTemplateKeyword: false
+SpaceAfterCStyleCast: true
+SortUsingDeclarations: Lexicographic
