@@ -19,17 +19,17 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "ethernetif.h"
-#include "cmsis_os.h"
-#include "lan8742.h"
-#include "lwip/ethip6.h"
-#include "lwip/opt.h"
-#include "lwip/tcpip.h"
-#include "lwip/timeouts.h"
 #include "main.h"
-#include "netif/etharp.h"
+#include "lwip/opt.h"
+#include "lwip/timeouts.h"
 #include "netif/ethernet.h"
+#include "netif/etharp.h"
+#include "lwip/ethip6.h"
+#include "ethernetif.h"
+#include "lan8742.h"
 #include <string.h>
+#include "cmsis_os.h"
+#include "lwip/tcpip.h"
 
 /* Within 'USER CODE' section, code will be kept by default at each generation
  */

@@ -26,14 +26,14 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "ethernetif.h"
-#include "lwip/dhcp.h"
+#include "lwip/opt.h"
 #include "lwip/mem.h"
 #include "lwip/memp.h"
-#include "lwip/netif.h"
-#include "lwip/opt.h"
-#include "lwip/timeouts.h"
 #include "netif/etharp.h"
+#include "lwip/dhcp.h"
+#include "lwip/netif.h"
+#include "lwip/timeouts.h"
+#include "ethernetif.h"
 
 /* Includes for RTOS ---------------------------------------------------------*/
 #if WITH_RTOS

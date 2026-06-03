@@ -19,9 +19,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
-#include "cmsis_os.h"
-#include "main.h"
 #include "task.h"
+#include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -50,6 +50,7 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
+osThreadId SerialTaskHandle;
 osMutexId serialWriteMutexHandle;
 osStaticMutexDef_t serialWriteMutexControlBlock;
 
@@ -59,6 +60,7 @@ osStaticMutexDef_t serialWriteMutexControlBlock;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(const void *argument);
+extern void NEI_SerialTask(const void *argument);
 
 extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -129,6 +131,10 @@ void MX_FREERTOS_Init(void) {
     /* definition and creation of defaultTask */
     osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 512);
     defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+    /* definition and creation of SerialTask */
+    osThreadDef(SerialTask, NEI_SerialTask, osPriorityLow, 0, 256);
+    SerialTaskHandle = osThreadCreate(osThread(SerialTask), NULL);
 
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */

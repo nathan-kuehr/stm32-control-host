@@ -20,9 +20,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
-#include "gpio.h"
 #include "lwip.h"
 #include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -225,8 +225,8 @@ void MPU_Config(void) {
     /** Initializes and configures the Region and the memory to be protected
      */
     MPU_InitStruct.Number       = MPU_REGION_NUMBER3;
-    MPU_InitStruct.BaseAddress  = 0x2007c400;
-    MPU_InitStruct.Size         = MPU_REGION_SIZE_512B;
+    MPU_InitStruct.BaseAddress  = 0x2007c800;
+    MPU_InitStruct.Size         = MPU_REGION_SIZE_2KB;
     MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
     MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
 

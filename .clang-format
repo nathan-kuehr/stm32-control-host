@@ -81,3 +81,4 @@ SpaceBeforeAssignmentOperators: true
 SpaceAfterTemplateKeyword: false
 SpaceAfterCStyleCast: true
 SortUsingDeclarations: Lexicographic
+SortIncludes: Never
