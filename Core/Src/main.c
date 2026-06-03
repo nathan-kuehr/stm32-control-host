@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "dma.h"
 #include "gpio.h"
 #include "lwip.h"
 #include "usart.h"
@@ -96,6 +97,7 @@ int main(void) {
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
+    MX_DMA_Init();
     MX_USART3_UART_Init();
     /* USER CODE BEGIN 2 */
 
@@ -217,6 +219,16 @@ void MPU_Config(void) {
     MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
     MPU_InitStruct.IsShareable  = MPU_ACCESS_SHAREABLE;
     MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+    HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+    /** Initializes and configures the Region and the memory to be protected
+     */
+    MPU_InitStruct.Number       = MPU_REGION_NUMBER3;
+    MPU_InitStruct.BaseAddress  = 0x2007c400;
+    MPU_InitStruct.Size         = MPU_REGION_SIZE_512B;
+    MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
+    MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
 
     HAL_MPU_ConfigRegion(&MPU_InitStruct);
     /* Enables the MPU */

@@ -55,8 +55,11 @@ ENTRY(Reset_Handler)
 /* Specify the memory areas */
 MEMORY
 {
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 512K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 2048K
+RAM (xrw)         : ORIGIN = 0x20000000, LENGTH = 0x7C000   /* SRAM until 0x2007C000 (SRAM2 separat) */
+FLASH (rx)        : ORIGIN = 0x8000000,  LENGTH = 2048K
+MEM_ETH_Rx(xrw)   : ORIGIN = 0x2007C000, LENGTH = 0xA0
+MEM_ETH_Tx(xrw)   : ORIGIN = 0x2007C0A0, LENGTH = 0xA0
+MEM_DMA_UART(xrw) : ORIGIN = 0x2007C400, LENGTH = 512
 }
 
 /* Highest address of the user mode stack */
@@ -246,5 +249,7 @@ SECTIONS
     libm.a:* ( * )
     libgcc.a:* ( * )
   }
-
+  .RxDescripSection (NOLOAD) : { *(.RxDescripSection) } >MEM_ETH_Rx
+  .TxDescripSection (NOLOAD) : { *(.TxDescripSection) } >MEM_ETH_Tx
+  .DmaUartBuffer (NOLOAD) : { *(.DmaUartBuffer) } >MEM_DMA_UART
 }
