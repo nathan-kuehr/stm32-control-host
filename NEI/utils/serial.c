@@ -4,10 +4,11 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "portmacro.h"
 #include "stm32f7xx_hal.h"
 #include "usart.h"
+#include "FreeRTOS.h"
 #include "stream_buffer.h"
+#include "semphr.h"
 
 #define NEI_BUFSIZE_256B 0x100
 #define NEI_BUFSIZE_512B 0x200
@@ -48,7 +49,9 @@ void NEI_SerialInit(void) {
     }
 
     // Start circular RX DMA with idle line detect
-    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart3, NEI_SerialRxBuffer, sizeof(NEI_SerialRxBuffer)) != HAL_OK) {
+    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart3, NEI_SerialRxBuffer,
+            sizeof(NEI_SerialRxBuffer))
+        != HAL_OK) {
         return;
     }
 
@@ -105,7 +108,8 @@ void NEI_SerialTaskMain(const void *argument) {
     while (NEI_SerialIsInit) {
         xSemaphoreTake(NEI_SerialTxBufferSemHandle, portMAX_DELAY);
 
-        lenTxBytes = xStreamBufferReceive(NEI_SerialTxStreamBuffer, NEI_SerialTxBuffer, sizeof(NEI_SerialTxBuffer), portMAX_DELAY);
+        lenTxBytes = xStreamBufferReceive(NEI_SerialTxStreamBuffer,
+            NEI_SerialTxBuffer, sizeof(NEI_SerialTxBuffer), portMAX_DELAY);
 
         if (lenTxBytes
             && (HAL_UART_Transmit_DMA(&huart3, NEI_SerialTxBuffer, lenTxBytes)
