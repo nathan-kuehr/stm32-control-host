@@ -50,9 +50,13 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osThreadId SerialTaskHandle;
-osMutexId serialWriteMutexHandle;
-osStaticMutexDef_t serialWriteMutexControlBlock;
+osThreadId NEI_SerialTaskHandle;
+uint32_t NEI_SerialTaskBuffer[256];
+osStaticThreadDef_t NEI_SerialTaskControlBlock;
+osMutexId NEI_SerialTxStreamBufferMtxHandle;
+osMutexId NEI_SerialRxStreamBufferMtxHandle;
+osSemaphoreId NEI_SerialTxBufferSemHandle;
+osStaticSemaphoreDef_t NEI_SerialTxBufferSemControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -60,7 +64,7 @@ osStaticMutexDef_t serialWriteMutexControlBlock;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(const void *argument);
-extern void NEI_SerialTask(const void *argument);
+extern void NEI_SerialTaskMain(const void *argument);
 
 extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -104,19 +108,34 @@ void MX_FREERTOS_Init(void) {
 
     /* USER CODE END Init */
     /* Create the mutex(es) */
-    /* definition and creation of serialWriteMutex */
-    osMutexStaticDef(serialWriteMutex, &serialWriteMutexControlBlock);
-    serialWriteMutexHandle = osMutexCreate(osMutex(serialWriteMutex));
+    /* definition and creation of NEI_SerialTxStreamBufferMtx */
+    osMutexDef(NEI_SerialTxStreamBufferMtx);
+    NEI_SerialTxStreamBufferMtxHandle =
+        osMutexCreate(osMutex(NEI_SerialTxStreamBufferMtx));
+
+    /* definition and creation of NEI_SerialRxStreamBufferMtx */
+    osMutexDef(NEI_SerialRxStreamBufferMtx);
+    NEI_SerialRxStreamBufferMtxHandle =
+        osMutexCreate(osMutex(NEI_SerialRxStreamBufferMtx));
 
     /* USER CODE BEGIN RTOS_MUTEX */
 
-    serialWriteBlockingInit(); // Init here the serial write as it takes access
-                               // to the mutex
-
     /* USER CODE END RTOS_MUTEX */
 
+    /* Create the semaphores(s) */
+    /* definition and creation of NEI_SerialTxBufferSem */
+    osSemaphoreStaticDef(NEI_SerialTxBufferSem,
+        &NEI_SerialTxBufferSemControlBlock);
+    NEI_SerialTxBufferSemHandle =
+        osSemaphoreCreate(osSemaphore(NEI_SerialTxBufferSem), 1);
+
     /* USER CODE BEGIN RTOS_SEMAPHORES */
-    /* add semaphores, ... */
+
+    // Bug in CubeMX : even though init. available,
+    // we cannot access it -> release it initially here
+    // Maybe when porting to cmsis_v2
+    osSemaphoreRelease(NEI_SerialTxBufferSemHandle);
+
     /* USER CODE END RTOS_SEMAPHORES */
 
     /* USER CODE BEGIN RTOS_TIMERS */
@@ -132,9 +151,10 @@ void MX_FREERTOS_Init(void) {
     osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 512);
     defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-    /* definition and creation of SerialTask */
-    osThreadDef(SerialTask, NEI_SerialTask, osPriorityLow, 0, 256);
-    SerialTaskHandle = osThreadCreate(osThread(SerialTask), NULL);
+    /* definition and creation of NEI_SerialTask */
+    osThreadStaticDef(NEI_SerialTask, NEI_SerialTaskMain, osPriorityLow, 0, 256,
+        NEI_SerialTaskBuffer, &NEI_SerialTaskControlBlock);
+    NEI_SerialTaskHandle = osThreadCreate(osThread(NEI_SerialTask), NULL);
 
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
