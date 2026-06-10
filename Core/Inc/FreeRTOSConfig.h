@@ -74,6 +74,7 @@ extern uint32_t SystemCoreClock;
 #define configQUEUE_REGISTRY_SIZE               8
 #define configCHECK_FOR_STACK_OVERFLOW          2
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
+#define configUSE_POSIX_ERRNO                   1
 /* USER CODE BEGIN MESSAGE_BUFFER_LENGTH_TYPE */
 /* Defaults to size_t for backward compatibility, but can be changed
    if lengths will always be less than the number of bytes in a size_t. */
