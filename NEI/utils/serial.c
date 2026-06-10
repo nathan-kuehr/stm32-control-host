@@ -1,3 +1,5 @@
+#include "defines.h"
+
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -9,10 +11,6 @@
 #include "FreeRTOS.h"
 #include "stream_buffer.h"
 #include "semphr.h"
-
-#define NEI_BUFSIZE_256B 0x100
-#define NEI_BUFSIZE_512B 0x200
-#define NEI_BUFSIZE_1KB  0x400
 
 /// @brief DMA Buffer for UART sending
 static uint8_t NEI_SerialTxBuffer[NEI_BUFSIZE_256B]

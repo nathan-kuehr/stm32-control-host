@@ -1,4 +1,5 @@
 #include "connect.h"
+#include "defines.h"
 
 #include <errno.h>
 #include <stdint.h>
@@ -11,6 +12,7 @@
 #include "netdb.h"
 #include "FreeRTOS.h"
 #include "projdefs.h"
+#include "sockets.h"
 #include "task.h"
 
 
@@ -18,41 +20,24 @@
 #define NEI_CONFIG_CONN_PORT      "connection.port"
 #define NEI_CONN_MAX_CONN_RETRIES 5
 
-#define NEI_DELAY_1S pdMS_TO_TICKS(1000)
-
-/// @brief Swaps a and b
-/// @note Avoid to put rvalues and costly evaluations, as parameters could be
-/// multiply evaluated
-#define swap(a, b)                                                             \
-    do {                                                                       \
-        typeof(a) _swap_tmp = (a);                                             \
-        (a)                 = (b);                                             \
-        (b)                 = _swap_tmp;                                       \
-    } while (0)
-
-
-int NEI_ArkeoAPI_ConnectionInit(NEI_ArkeoAPI_Connection *apiConn,
-    const char *host, uint16_t port) {
-    if (!apiConn || !host) {
-        return -1;
-    }
+int NEI_ArkeoAPI_ClientInit(NEI_ArkeoAPI_Client *client, const char *host,
+    uint16_t port) {
+    if (!client || !host) return -1;
 
     unsigned int len = strlen(host);
     if (len > NEI_CONN_HOST_MAX_LEN) {
         return -1;
     } else {
-        memcpy(apiConn->host, host, len + 1);
-        apiConn->port      = port;
-        apiConn->tcpSocket = -1;
+        memcpy(client->host, host, len + 1);
+        client->port      = port;
+        client->tcpSocket = -1;
         return 0;
     }
 }
 
-int NEI_ArkeoAPI_ConnectionInitFromJSON(NEI_ArkeoAPI_Connection *apiConn,
-    char *json, size_t len) {
-    if (!apiConn) {
-        return -1;
-    }
+int NEI_ArkeoAPI_ClientInitFromJSON(NEI_ArkeoAPI_Client *client, char *json,
+    size_t len) {
+    if (!client) return -1;
 
     // Value from queried keys
     char *value;
@@ -81,27 +66,24 @@ int NEI_ArkeoAPI_ConnectionInitFromJSON(NEI_ArkeoAPI_Connection *apiConn,
     }
     if (jsonResult == JSONSuccess) {
         swap(charSave, value[valueLen]);
-        result = NEI_ArkeoAPI_ConnectionInit(apiConn, value, port);
+        result = NEI_ArkeoAPI_ConnectionInit(client, value, port);
         swap(charSave, value[valueLen]);
     }
-
     return result;
 }
 
-int NEI_ArkeoAPI_ConnectionEstablish(NEI_ArkeoAPI_Connection *apiConn) {
-    if (!apiConn) {
-        return -1;
-    }
+int NEI_ArkeoAPI_connect(NEI_ArkeoAPI_Client *client) {
+    if (!client) return -1;
 
     // We need the port as a string
     char alphaPort[6];
-    sniprintf(alphaPort, sizeof(alphaPort), "%u", apiConn->port);
+    sniprintf(alphaPort, sizeof(alphaPort), "%u", client->port);
 
     struct addrinfo *target,
         hints = {.ai_family = AF_INET, .ai_socktype = SOCK_STREAM};
 
     // Try resolving the host name & port
-    if (getaddrinfo(apiConn->host, alphaPort, &hints, &target) != 0) {
+    if (getaddrinfo(client->host, alphaPort, &hints, &target) != 0) {
         return -1;
     }
 
@@ -120,22 +102,24 @@ int NEI_ArkeoAPI_ConnectionEstablish(NEI_ArkeoAPI_Connection *apiConn) {
     }
     freeaddrinfo(target);
 
-    if (socketFd < 0) {
-        return -1;
-    } else {
-        apiConn->tcpSocket = socketFd;
-        return 0;
+    if (socketFd >= 0) {
+        if (NEI_ArkeoAPI_setSocketOptions(socketFd) == 0) {
+            client->tcpSocket = socketFd;
+            return 0;
+        } else {
+            close(socketFd);
+        }
     }
+    return -1;
 }
 
-
-void NEI_testConnection(void) {
-    NEI_ArkeoAPI_Connection arkeo =
-        NEI_ArkeoAPI_ConnectionInit_Static("192.168.100.1", 6340);
-
-    if (NEI_ArkeoAPI_ConnectionEstablish(&arkeo) == 0) {
-        close(arkeo.tcpSocket);
+int NEI_ArkeoAPI_disconnect(NEI_ArkeoAPI_Client *client) {
+    if (!client) {
+        return -1;
     } else {
-        vTaskDelay(NEI_DELAY_1S);
+        if (NEI_ArkeoAPI_isConnected(client)) {
+            close(client->tcpSocket);
+        }
+        return 0;
     }
 }

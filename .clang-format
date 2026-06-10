@@ -17,6 +17,7 @@ AllowShortBlocksOnASingleLine: Empty
 AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 
@@ -47,7 +48,7 @@ FixNamespaceComments: true
 
 IndentGotoLabels: false
 IndentWidth: 4
-InsertBraces: true
+InsertBraces: false
 
 KeepEmptyLines:
   AtEndOfFile: false
